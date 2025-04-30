@@ -1,0 +1,30 @@
+version: 2.1
+orbs:
+  python: circleci/python@2
+
+jobs:
+  build-and-test: 
+    executor:
+      name: python/default
+      tag: '3.7'
+    steps:
+      - checkout
+      - run:
+          name: Setup Virual Env
+          command: |
+            virualenv -p python3.7 env
+            echo "source ./env/scripts/activate"
+
+      - run: 
+          name: install Dependencies
+          command: pip install -r requirements.txt
+
+workflows:
+  build-test-and-deploy:
+    jobs:
+      - build-and-test:
+        filters:
+          branches:
+            only:
+              - cicd-demo
+  
