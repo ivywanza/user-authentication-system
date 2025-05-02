@@ -1,8 +1,10 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class UserRequest(BaseModel):
-    fullName: str
+    first_name: str
+    last_name:str
     email: str
     role:str
     phone:str
@@ -13,6 +15,14 @@ class UserLogin(BaseModel):
     password:str
 
 class UserProfileUpdate(BaseModel):
-    name:str
-    email:str
-    phone:str
+    first_name: str
+    last_name: str
+    phone_number: str
+    role: str
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
