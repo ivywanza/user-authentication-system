@@ -9,7 +9,7 @@ from fastapi import HTTPException
 # Create a context using bcrypt
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-secret_key = "your-secret-key"
+
 algorithm  = "HS256"
 access_token_expire_minutes = 30 
 
@@ -47,3 +47,15 @@ def verify_firebase_token(id_token: str):
         return decoded_token  # contains uid, email, etc.
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid Firebase token")
+    
+
+def create_reset_token(email: str):
+    expire = datetime.utcnow() + timedelta(minutes=access_token_expire_minutes)
+    return jwt.encode({"sub": email, "exp": expire}, secret_key, algorithm=algorithm)
+
+def verify_reset_token(token: str):
+    try:
+        payload = jwt.decode(token, secret_key, algorithms=[algorithm])
+        return payload.get("sub")
+    except Exception:
+        return None
