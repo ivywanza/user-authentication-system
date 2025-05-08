@@ -4,12 +4,13 @@ from datetime import datetime,timedelta
 from typing import Union
 from firebase_admin import auth
 from fastapi import HTTPException
+import os
 
 
 # Create a context using bcrypt
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
+secret_key=os.environ.get("secret_key")
 algorithm  = "HS256"
 access_token_expire_minutes = 30 
 
